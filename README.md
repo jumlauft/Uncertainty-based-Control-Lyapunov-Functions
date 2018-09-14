@@ -13,8 +13,10 @@ The provided Matlab code accompanies the following publication:
     ISSN={2475-1456}, 
     month={July},
 }
+
 Please acknowledge the authors in any academic publication that have made
 use of this code or parts of it by referencing to the paper.
+
 
 The most recent version is available at: 
     https://gitlab.lrz.de/ga68car/OptUCLF4GP.git
