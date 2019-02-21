@@ -39,7 +39,7 @@ dgrid = sqrt(sum(((grid_max-grid_min)/(Ndgrid-1)).^2,1));
 % Setup graph
 costgrid = cost(Xgrid);
 if Ngrid <= 1e4  % Chose computational more efficient method
-    dall = pdist2(Xgrid', Xgrid'); dall(dall>=dgrid) = 0;
+    dall = pdist2(Xgrid', Xgrid'); dall(dall>=dgrid+1e-6) = 0;
     G = sparse((costgrid+costgrid')/2.*dall);
 else
     G = sparse(Ngrid,Ngrid);
@@ -50,6 +50,9 @@ else
         G = G + sparse(ii,n*ones(1,numel(ii)),d(ii).*avgcost,Ngrid,Ngrid);
     end
 end
+% Graphical Verification
+% Ggraph = graph(G);
+% figure; plot(Ggraph,'XData',Xgrid(1,:),'YData',Xgrid(2,:));%'EdgeLabel',G.Edges.Weight
 
 % Compute distance to origin in graph
 [dist] = graphshortestpath(G,i0);
