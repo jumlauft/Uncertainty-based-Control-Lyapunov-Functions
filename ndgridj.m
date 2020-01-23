@@ -38,8 +38,7 @@ end
 grid = reshape(permute(cat(D+1, gg{:}),[D:-1:1 D+1]),[],D)';
 
 if nargout >1
-    dist = (grid_max-grid_min)./ns;
-    max_dist = sqrt(sum(dist.^2))/2;
+    max_dist = norm((grid_max-grid_min)./(ns-1));
 end
 
 

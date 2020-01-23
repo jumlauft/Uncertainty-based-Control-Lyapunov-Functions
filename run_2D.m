@@ -27,7 +27,7 @@ optVvar.Ndgrid = floor(nthroot(Ngrid,E)); %Ngrid = Ndgrid^E;
 optVvar.InterpMethod = 'linear';
 
 % Simulation
-x0sim = [0;-5];             % Initial point in simulation´
+x0sim = [0;-5];             % Initial point in simulation?
 Tsim = 10;                  % Maximum simulation time (default = 10)
 dtsim = 0.01;               % Time interval output ode45 (default = 0.01)
 epsfd = 1e-4  ;             % finite difference for numeric gradient (default = 1e-4)
@@ -75,25 +75,25 @@ disp('Compute Lyapunov Function...')
 Vint = Vvar(varfun,grid_min,grid_max,optVvar);
 V = @(xi) Vint(xi(1,:)',xi(2,:)');
 
-%% Generate Trajectories
-disp('Run Simulation...')
-
-fun = @(t,x) dynt(t,x)-mufun(x)-kc*gradestj(V,x,epsfd);
-[Ttraj,Xtraj,te,ye,ie]  = ode45(fun,0:dtsim:Tsim,x0sim,options);
-
-%% Visualization
-disp('Visualize...')
-
-figure; hold on; axis tight;
-title('GPSSM: Mean and Variance Prediction')
-surf(Xte1,Xte2,reshape(sqrt(sum(varfun(Xte).^2,1)),Ndte,Ndte)-1e4,'EdgeColor','none','FaceColor','interp'); colormap(flipud(parula))
-Xte_vec = mufun(Xte);
-h = streamslice(Xte1,Xte2,reshape(Xte_vec(1,:),Ndte,Ndte),reshape(Xte_vec(2,:),Ndte,Ndte),2,'r'); set( h, 'Color', 'r' )
-
-figure; hold on; axis tight
-title('Uncertainty-based Control Lyapunov function and Trajectories')
-surf(Xte1,Xte2,-reshape(V(Xte),Ndte,Ndte),'EdgeColor','none','FaceColor','interp');
-plot(Xtraj(:,1),Xtraj(:,2),'r');
-quiver(Xtr(1,:),Xtr(2,:),dXtr(1,:),dXtr(2,:),'k');%,'AutoScale','off'
-%%
-disp('Pau');
+% %% Generate Trajectories
+% disp('Run Simulation...')
+% 
+% fun = @(t,x) dynt(t,x)-mufun(x)-kc*gradestj(V,x,epsfd);
+% [Ttraj,Xtraj,te,ye,ie]  = ode45(fun,0:dtsim:Tsim,x0sim,options);
+% 
+% %% Visualization
+% disp('Visualize...')
+% 
+% figure; hold on; axis tight;
+% title('GPSSM: Mean and Variance Prediction')
+% surf(Xte1,Xte2,reshape(sqrt(sum(varfun(Xte).^2,1)),Ndte,Ndte)-1e4,'EdgeColor','none','FaceColor','interp'); colormap(flipud(parula))
+% Xte_vec = mufun(Xte);
+% h = streamslice(Xte1,Xte2,reshape(Xte_vec(1,:),Ndte,Ndte),reshape(Xte_vec(2,:),Ndte,Ndte),2,'r'); set( h, 'Color', 'r' )
+% 
+% figure; hold on; axis tight
+% title('Uncertainty-based Control Lyapunov function and Trajectories')
+% surf(Xte1,Xte2,-reshape(V(Xte),Ndte,Ndte),'EdgeColor','none','FaceColor','interp');
+% plot(Xtraj(:,1),Xtraj(:,2),'r');
+% quiver(Xtr(1,:),Xtr(2,:),dXtr(1,:),dXtr(2,:),'k');%,'AutoScale','off'
+% %%
+% disp('Pau');

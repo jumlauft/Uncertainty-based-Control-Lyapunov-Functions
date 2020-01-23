@@ -31,25 +31,25 @@ sdfun = @(x) sqrt(varfun(x));
 cost = @(x) sqrt(sum(sdfun(x).^2,1));
 
 % Create grid and ensure one gridpoint is at origin/xEq
-Xgrid = ndgridj(grid_min,grid_max,Ndgrid*ones(E,1));
+[Xgrid,dgrid] = ndgridj(grid_min,grid_max,Ndgrid*ones(E,1));
 [~,i0] = min(sum((Xgrid-xEq).^2,1));
 Xgrid = Xgrid - (Xgrid(:,i0)-xEq);
-dgrid = sqrt(sum(((grid_max-grid_min)/(Ndgrid-1)).^2,1));
 
 % Setup graph
 costgrid = cost(Xgrid);
-if Ngrid <= 1e4  % Chose computational more efficient method
-    dall = pdist2(Xgrid', Xgrid'); dall(dall>=dgrid+1e-6) = 0;
-    G = sparse((costgrid+costgrid')/2.*dall);
-else
+% if Ngrid <= 1e4  % Chose computational more efficient method
+%     dall = pdist2(Xgrid', Xgrid'); dall(dall>=dgrid+1e-6) = 0;
+%     G = sparse((costgrid+costgrid')/2.*dall);
+% else
     G = sparse(Ngrid,Ngrid);
     for n = 1:Ngrid
-        d = sqrt(sum((Xgrid(:,n)-Xgrid).^2,1));
+%         d = sqrt(sum((Xgrid(:,n)-Xgrid).^2,1));
+        d = pdist2(Xgrid(:,n)', Xgrid');
         ii = find(d<dgrid);
         avgcost = (costgrid(ii)+costgrid(n))/2;
         G = G + sparse(ii,n*ones(1,numel(ii)),d(ii).*avgcost,Ngrid,Ngrid);
     end
-end
+% end
 % Graphical Verification
 % Ggraph = graph(G);
 % figure; plot(Ggraph,'XData',Xgrid(1,:),'YData',Xgrid(2,:));%'EdgeLabel',G.Edges.Weight
